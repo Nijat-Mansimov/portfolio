@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional CyberSec Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/username/repo/main/favicon.ico"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #121212;
+            --primary-color: #00e699;
+            --secondary-color: #9966ff;
+            --text-color: #f0f0f0;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --subtle-glow: 0 0 8px rgba(0, 230, 153, 0.4);
+            --gradient-1: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.8));
+        }
+
+        body.light-mode {
+            --bg-color: #ffffff;
+            --primary-color: #008060;
+            --secondary-color: #551a8b;
+            --text-color: #333333;
+            --card-bg: #f5f5f5;
+            --border-color: #d0d0d0;
+            --subtle-glow: none;
+            --gradient-1: linear-gradient(135deg, rgba(240, 240, 240, 0.8), rgba(255, 255, 255, 0.8));
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+        
+        #theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .resume-btn {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .resume-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 230, 153, 0.4);
+        }
+
+        .content-section {
+            padding: 6rem 0;
+        }
+
+        .profile-hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            box-shadow: 0 0 10px var(--primary-color);
+            object-fit: cover;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        body.light-mode .profile-img {
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid var(--primary-color);
+            animation: typing 2s steps(20, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { 50% { border-color: transparent; } }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-top: 0.5rem;
+        }
+
+        .cta-btn {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 230, 153, 0.4);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -10px;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary-color);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .tech-category {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+        .tech-category h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .tech-list li {
+            background: rgba(0, 230, 153, 0.1);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+        .tech-list li:hover {
+            transform: translateY(-2px);
+            background: var(--primary-color);
+            color: var(--bg-color);
+        }
+        
+        .projects-wrapper {
+            position: relative;
+            padding: 0 2rem;
+        }
+        .projects-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding: 1rem 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .projects-slider::-webkit-scrollbar {
+            display: none;
+        }
+        .project-card {
+            flex: 0 0 350px;
+            scroll-snap-align: start;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .project-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+        .project-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+        .project-links a {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .project-links a:hover {
+            background: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .slider-button:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+        }
+        #left-button { left: 0; }
+        #right-button { right: 0; }
+       
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 1rem;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            transform: translateY(-3px);
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+            text-align: left;
+        }
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        .footer-column h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .footer-column p, .footer-column a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .footer-column a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons-footer {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .social-icons-footer a {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-icons-footer a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Responsive Design --- */
+        .hamburger-menu {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--card-bg);
+                padding: 4rem 2rem 2rem;
+                gap: 1.5rem;
+                transition: right 0.4s ease-in-out;
+                z-index: 999;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            }
+            .nav-links.active {
+                display: flex;
+                right: 0;
+            }
+            .hamburger-menu {
+                display: block;
+            }
+            .nav-links a, .nav-links .resume-btn, .nav-links #theme-toggle {
+                font-size: 1.1rem;
+                padding: 0.75rem 0;
+                width: 100%;
+                text-align: center;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .hero-text h1 {
+                font-size: 2.5rem;
+                white-space: normal;
+            }
+            .hero-text p {
+                font-size: 1rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            .card-grid, .tech-grid {
+                grid-template-columns: 1fr;
+            }
+            .tech-list li {
+                font-size: 0.8rem;
+            }
+            .projects-slider {
+                padding: 1rem;
+                justify-content: flex-start;
+            }
+            .project-card {
+                flex: 0 0 80%;
+            }
+            .slider-button {
+                display: none;
+            }
+            .projects-wrapper {
+                padding: 0;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+            .footer-column {
+                min-width: 100%;
+            }
+            .footer-column h3 {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <nav>
+            <div class="logo">PORTFOLIO</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#tools">Tools</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+                <button id="theme-toggle">🌙</button>
+                <a href="#" class="resume-btn">Download Resume</a>
+            </div>
+            <div class="hamburger-menu" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+
+        <section id="hero" class="profile-hero">
+            <div class="profile-content">
+                <img src="me2.png" alt="Your Profile" class="profile-img">
+                <div class="hero-text">
+                    <h1>Nijat Mansimov</h1>
+                    <p>// Hi. I am a Cybersecurity Engineer</p>
+                    <a href="#contact" class="cta-btn">Connect</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="content-section">
+            <h2>About Me</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Proactive Defense</h3>
+                    <p>I specialize in building resilient security infrastructures to counter evolving cyber threats. My focus is on proactive defense strategies that stop threats before they can cause damage.</p>
+                </div>
+                <div class="card">
+                    <h3>Incident Response</h3>
+                    <p>When an incident occurs, I'm ready to act. My expertise in rapid response and mitigation minimizes impact and ensures business continuity.</p>
+                </div>
+                <div class="card">
+                    <h3>Threat Intelligence</h3>
+                    <p>I leverage the latest threat intelligence to stay one step ahead of adversaries, ensuring our defenses are always up-to-date and effective.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="content-section">
+            <h2>Core Skills</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Network Security</h3>
+                    <p>Designing, implementing, and monitoring secure network architectures.</p>
+                </div>
+                <div class="card">
+                    <h3>SIEM & Log Analysis</h3>
+                    <p>Expertise in SIEM platforms for real-time threat detection and analysis of security logs.</p>
+                </div>
+                <div class="card">
+                    <h3>Vulnerability Management</h3>
+                    <p>Identifying, assessing, and mitigating vulnerabilities to reduce the attack surface.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="content-section">
+            <h2>Tools & Technologies</h2>
+            <div class="tech-grid">
+                <div class="tech-category">
+                    <h3>Security Platforms & SOAR</h3>
+                    <ul class="tech-list">
+                        <li>Cortex (XSIAM, XDR, XSOAR)</li>
+                        <li>Splunk</li>
+                        <li>IBM QRadar</li>
+                        <li>Wazuh</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Network Security & Firewalls</h3>
+                    <ul class="tech-list">
+                        <li>pfSense</li>
+                        <li>OPNsense</li>
+                        <li>Suricata</li>
+                        <li>Snort</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Cloud & Infrastructure</h3>
+                    <ul class="tech-list">
+                        <li>AWS (Amazon Web Services)</li>
+                        <li>DigitalOcean</li>
+                        <li>Ansible</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Virtualization & Containerization</h3>
+                    <ul class="tech-list">
+                        <li>VirtualBox</li>
+                        <li>VMware (ESXi, Workstation)</li>
+                        <li>Hyper-V</li>
+                        <li>Docker</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Network Monitoring & Analysis</h3>
+                    <ul class="tech-list">
+                        <li>Wireshark</li>
+                        <li>tcpdump</li>
+                        <li>NetFlow</li>
+                        <li>Zeek (formerly Bro)</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Endpoint Security</h3>
+                    <ul class="tech-list">
+                        <li>Trellix</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Log Management & SIEM</h3>
+                    <ul class="tech-list">
+                        <li>ELK Stack (Elasticsearch, Logstash, Kibana)</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Programming & Scripting</h3>
+                    <ul class="tech-list">
+                        <li>Python</li>
+                        <li>PowerShell</li>
+                        <li>Bash</li>
+                        <li>Go</li>
+                        <li>Node.JS</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+                <div class="tech-category">
+                    <h3>Collaboration & Version Control</h3>
+                    <ul class="tech-list">
+                        <li>Git</li>
+                        <li>GitHub</li>
+                        <li>GitLab</li>
+                        <li>Jira</li>
+                        <li>Confluence</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="content-section">
+            <h2>GitHub Projects</h2>
+            <div class="projects-wrapper">
+                <button id="left-button" class="slider-button">←</button>
+                <div id="projects-slider" class="projects-slider">
+                    <div class="project-card">
+                        <h3>Stealthy C2 Detector</h3>
+                        <p>Professional C2 Beacon Detector - Çoxprotokollu şəbəkə trafikində gizlənmiş Command & Control (C2) əlaqələrini, DNS tunelləşdirmə, HTTP beaconing, SSL anomalyaları, SSH hücumları və şübhəli bağlantıları aşkar etmək üçün enterprise səviyyəli detektor sistemidir.</p>
+                        <p>Key technologies: Python, Network Security</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cl1fact0ry/stealthy-c2-detector">GitHub Repo</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3>Phishing Email Analyzer</h3>
+                        <p>Bu proqram, .eml və .msg formatlı e-poçt fayllarını təhlil etmək üçün hazırlanmış masaüstü tətbiqidir. Təhlil prosesi zamanı e-poçtun daxilindəki URL-lər, IP ünvanları, domainlər və hash dəyərləri aşkar edilir, həmçinin fayl əlavələri (attachments) yoxlanılır. Proqram, asinxron şəkildə müxtəlif təhlükəsizlik mənbələri ilə (VirusTotal, OTX, urlscan, GreyNoise, AbuseIPDB, WHOIS) əlaqə quraraq əlavə məlumatlar əldə edir və nəticələri vizual şəkildə təqdim edir.</p>
+                        <p>Key technologies: Python, Email Security</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cl1fact0ry/phishing-email-analyzer">GitHub Repo</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <h3>Threat Intelligence Desktop App</h3>
+                        <p>Threat Intelligence Checker — şübhəli IP və faylları analiz etmək üçün hazırlanmış PyQt5 əsaslı təhlükəsizlik alətidir. Bu tətbiq müxtəlif Threat Intelligence (TI) platformalarından istifadə edərək nəticələri vahid interfeys üzərində göstərir.</p>
+                        <p>Key technologies: Python, Threat Analyzing</p>
+                        <div class="project-links">
+                            <a href="https://github.com/cl1fact0ry/threat-intelligence-desktop-app">GitHub Repo</a>
+                        </div>
+                    </div>
+                </div>
+                <button id="right-button" class="slider-button">→</button>
+            </div>
+        </section>
+
+        <section id="contact" class="content-section">
+            <h2>Contact</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Name" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-column">
+                <h3>Contact</h3>
+                <p>Email: mansimovnijat@gmail.com</p>
+                <p>Location: Baku, Azerbaijan</p>
+            </div>
+            <div class="footer-column">
+                <h3>Connect With Me</h3>
+                <div class="social-icons-footer">
+                    <a href="https://www.linkedin.com/in/nijat-mansimov-9a4b59212/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/cl1fact0ry" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com/nijatmansimov" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Sitemap</h3>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <p style="margin-top: 2rem; color: var(--border-color);">&copy; 2025 MANSIMOV N. All Rights Reserved.</p>
+    </footer>
+    
+    <script>
+        // Subtle Particle Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let particles = [];
+        const numParticles = 100;
+        const maxDist = 150;
+
+        function Particle(x, y) {
+            this.x = x || Math.random() * width;
+            this.y = y || Math.random() * height;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+            this.radius = Math.random() * 1.5;
+        }
+
+        function createParticles() {
+            particles = [];
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            const particleColor = document.body.classList.contains('light-mode') ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.6)';
+
+            for (let i = 0; i < particles.length; i++) {
+                const p1 = particles[i];
+                ctx.beginPath();
+                ctx.arc(p1.x, p1.y, p1.radius, 0, Math.PI * 2);
+                ctx.fillStyle = particleColor;
+                ctx.fill();
+
+                p1.x += p1.vx;
+                p1.y += p1.vy;
+
+                if (p1.x < 0 || p1.x > width) p1.vx *= -1;
+                if (p1.y < 0 || p1.y > height) p1.vy *= -1;
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dist = Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+
+                    if (dist < maxDist) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist / maxDist})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+
+        // Initialize
+        canvas.width = width;
+        canvas.height = height;
+        createParticles();
+        draw();
+
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            createParticles();
+        });
+
+        // Theme Toggle
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            themeToggleBtn.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+        });
+
+        // Hamburger Menu Functionality
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburgerMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu on link click (for smooth scrolling)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // GitHub Projects Slider Functionality
+        const slider = document.getElementById('projects-slider');
+        const leftButton = document.getElementById('left-button');
+        const rightButton = document.getElementById('right-button');
+
+        leftButton.addEventListener('click', () => {
+            slider.scrollBy({ left: -380, behavior: 'smooth' });
+        });
+
+        rightButton.addEventListener('click', () => {
+            slider.scrollBy({ left: 380, behavior: 'smooth' });
+        });
+
+        // Mobile touch swipe for slider
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            slider.classList.add('active-drag');
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => {
+            isDown = false;
+            slider.classList.remove('active-drag');
+        });
+        slider.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.classList.remove('active-drag');
+        });
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2; // The scroll speed
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Touch events for mobile
+        slider.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('touchend', () => {
+            isDown = false;
+        });
+        slider.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+    </script>
+</body>
+</html>
